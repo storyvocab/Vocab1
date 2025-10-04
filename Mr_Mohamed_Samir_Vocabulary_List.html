@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Mohamed Samir – Vocabulary</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: linear-gradient(90deg, #00b4d8, #90e0ef);
+            color: white;
+            padding: 15px 0;
+            font-size: 1.6em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #shuffleButton {
+            background-color: #ffb703;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: 0.3s;
+        }
+        #shuffleButton:hover {
+            background-color: #fb8500;
+        }
+        #vocabularyGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .english-word {
+            font-size: 1.2em;
+            color: #0077b6;
+            font-weight: bold;
+        }
+        .word-type {
+            color: #555;
+            font-size: 0.9em;
+        }
+        .arabic-translation {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #0077b6;
+            color: white;
+            font-size: 0.9em;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>📘 Mr Mohamed Samir – Vocabulary List</header>
+    <button id="shuffleButton">🔁 عرض عشوائي للكلمات</button>
+    <div id="vocabularyGrid"></div>
+    <footer>✨ Designed by Mr Mohamed Samir ✨</footer>
+
+    <script>
+        const vocabulary = [
+            { en: "fisherman", type: "n", ar: "صياد" },
+            { en: "companion", type: "n", ar: "رفيق" },
+            { en: "leathery", type: "adj", ar: "مصنوع من الجلد" },
+            { en: "scarred", type: "adj", ar: "مجروح" },
+            { en: "admiration", type: "n", ar: "إعجاب" },
+            { en: "weakness", type: "n", ar: "ضعف" },
+            { en: "determination", type: "n", ar: "عزيمة" },
+            { en: "dignity", type: "n", ar: "كرامة / عزة" },
+            { en: "unlucky", type: "adj", ar: "سيئ الحظ" },
+            { en: "harpoon", type: "n", ar: "رمح صيد" },
+            { en: "faintly", type: "adv", ar: "بضعف / بهدوء" },
+            { en: "exact", type: "adj", ar: "دقيق" },
+            { en: "patience", type: "n", ar: "صبر" },
+            { en: "courage", type: "n", ar: "شجاعة" },
+            { en: "empty-handed", type: "adj", ar: "فارغ اليدين" },
+            { en: "Yankees", type: "n", ar: "فريق كرة البيسبول الأمريكي المشهور" },
+            { en: "drift back", type: "n", ar: "ينجرف راجعًا" },
+            { en: "gratefully", type: "adv", ar: "بامتنان" },
+            { en: "fishing gear", type: "n", ar: "أدوات الصيد" },
+            { en: "loyal", type: "adj", ar: "وفي" },
+            { en: "grin", type: "(ned)(v)", ar: "يبتسم" },
+            { en: "cut", type: "adj", ar: "مجروح" },
+            { en: "wisdom", type: "n", ar: "حكمة" },
+            { en: "skiff", type: "n", ar: "قارب خفيف" },
+            { en: "gaff", type: "n", ar: "خطاف الصيد / رمح قصير" },
+            { en: "fold the patched sail", type: "", ar: "يطوي الشراع المرقّع" },
+            { en: "coiled", type: "adj", ar: "ملفوف" },
+            { en: "nod", type: "(ded)(v)", ar: "يهز رأسه" },
+            { en: "hut", type: "n", ar: "كوخ" },
+            { en: "luxury", type: "n", ar: "رفاهية" },
+            { en: "treasure", type: "n", ar: "كنز" },
+            { en: "champion", type: "n", ar: "بطل" },
+            { en: "breeze", type: "n", ar: "نسيم" },
+            { en: "spirit", type: "n", ar: "روح" },
+            { en: "youth", type: "n", ar: "شباب" },
+            { en: "freedom", type: "n", ar: "حرية" },
+            { en: "lean back", type: "", ar: "يتكأ للخلف" },
+            { en: "ocean", type: "n", ar: "محيط" },
+            { en: "fearless", type: "adj", ar: "بلا خوف" },
+            { en: "hope", type: "n", ar: "أمل" },
+            { en: "whispers", type: "n", ar: "همسات" },
+            { en: "heel", type: "n", ar: "كعب القدم" },
+            { en: "battle", type: "n", ar: "معركة" },
+            { en: "fishing lines", type: "", ar: "خيوط الصيد" },
+            { en: "eagerly", type: "(adv)", ar: "بحماس / بشغف" }
+        ];
+
+        const gridContainer = document.getElementById('vocabularyGrid');
+
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('عذراً، متصفحك لا يدعم خاصية النطق الصوتي.');
+            }
+        }
+
+        function renderVocabulary(list) {
+            gridContainer.innerHTML = '';
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="english-word">${item.en} <span class="word-type">(${item.type})</span></div>
+                    <div class="arabic-translation">${item.ar}</div>
+                `;
+                card.addEventListener('click', () => speakWord(item.en));
+                gridContainer.appendChild(card);
+            });
+        }
+
+        function shuffleVocabulary() {
+            const shuffled = [...vocabulary].sort(() => Math.random() - 0.5);
+            renderVocabulary(shuffled);
+        }
+
+        document.getElementById('shuffleButton').addEventListener('click', shuffleVocabulary);
+        renderVocabulary(vocabulary);
+    </script>
+</body>
+</html>
